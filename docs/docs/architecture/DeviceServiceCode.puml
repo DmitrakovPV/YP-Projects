@@ -1,0 +1,78 @@
+@startuml
+title Code diagram — Device Management Service (aligned with component diagram)
+
+skinparam classAttributeIconSize 0
+
+class Device {
+  +ID: DeviceID
+  +HouseID: HouseID
+  +Type: DeviceType
+  +Serial: string
+  +State: DeviceState
+  --
+  +Register(houseID, type, serial): error
+  +Activate(): error
+  +MarkOffline(): error
+  +Decommission(reason): error
+}
+
+class ProvisioningSession {
+  +ID: SessionID
+  +DeviceID: DeviceID
+  +Token: string
+  +ExpiresAt: Time
+  +State: SessionState
+  --
+  +Start(device): error
+  +Confirm(reported): error
+  +Expire(): error
+  +IsValid(now): bool
+}
+
+class Twin {
+  +DeviceID: DeviceID
+  +Desired: State
+  +Reported: State
+  +Version: int
+  +LastReportedAt: Time
+  --
+  +SetDesired(state, version): error
+  +UpdateReported(state): error
+  +NeedsReconcile(): bool
+  +IsOnline(now): bool
+}
+
+Device "1" o-- "*" ProvisioningSession : "Provisioning Manager"
+Device "1" *-- "1" Twin : "Device Twin Manager"
+
+note right of Device
+  DeviceState:
+  Registered → Provisioning → Active → Offline → Decommissioned
+
+  Инварианты:
+  - Serial уникален в типе
+  - Type: thermostat | relay | lock | gate | camera
+  - Activate() только при Confirmed сессии
+  - Decommission блокируется при активной сессии
+end note
+
+note right of ProvisioningSession
+  SessionState:
+  Pending → Confirmed | Expired
+
+  Инварианты:
+  - Token TTL ≤ 15 минут
+  - Один активный Pending на устройство
+  - Confirm → Device.Activate()
+  - Expire → устройство остаётся в Provisioning
+end note
+
+note right of Twin
+  Инварианты:
+  - Version растёт монотонно (защита от гонок)
+  - Reported обновляется только через MQTT
+  - Desired ≠ Reported → NeedsReconcile()
+  - NeedsReconcile > N минут → DeviceNotResponding
+  - LastReportedAt + TTL < now → IsOnline() = false
+end note
+@enduml

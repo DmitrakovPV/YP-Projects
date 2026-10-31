@@ -21,8 +21,7 @@ System_Boundary(eco, "Набор микросервисов в архитект�
   Container(gate, "Access & Gate Service", "Go", "Ворота, замки, настройки доступов")
   Container(surv, "Surveillance Service", "Go", "Камеры, данные записей с камер, настройки доступов")
   Container(notif, "Notification Service", "Go", "Триггеры и уведомления")
-  Container(push, "Push Provider","Доставка push-уведомлений пользователю")
-
+  
   Container(kafka, "Apache Kafka", "Все межсервисные интеграции")
 
   ContainerDb(db_userhouse, "IAM DB", "PostgreSQL")
@@ -80,9 +79,8 @@ Rel(notif, heat, "Подписка на события", "gRPC")
 Rel(notif, light, "Подписка на события", "gRPC")
 Rel(notif, gate, "Подписка на события", "gRPC")
 Rel(notif, surv, "Подписка на события", "gRPC")
-Rel(notif, userhouse, "Адресаты и push-токены", "gRPC")
+Rel(notif, userhouse, "Адресаты", "gRPC")
 Rel(notif, push, "HTTPS")
-Rel(push, user, "Оповещение")
 
 Rel(userhouse, db_userhouse, "")
 Rel(dms, db_dms, "")
