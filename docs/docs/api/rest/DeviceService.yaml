@@ -1,0 +1,115 @@
+openapi: 3.0.3
+info:
+  title: Device Management Service — Public API
+  version: 1.3.0
+  description: |
+    Device Management Service через API Gateway.
+servers:
+  - url: https://api.warmhouse.local/v1
+    description: Через API Gateway
+security:
+  - bearerAuth: []
+tags:
+  - name: Devices
+paths:
+  /houses/{houseId}/devices:
+    parameters: [ { $ref: '#/components/parameters/HouseId' } ]
+    get:
+      tags: [Devices]
+      summary: Список устройств дома
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Device' }
+  /devices/{deviceId}:
+    parameters: [ { $ref: '#/components/parameters/DeviceId' } ]
+    get:
+      tags: [Devices]
+      summary: Получить устройство
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Device' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Devices]
+      summary: Обновить устройство
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/DeviceUpdate' }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Device' }
+    delete:
+      tags: [Devices]
+      summary: Удалить устройство
+      responses:
+        '204': { description: Deleted }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  parameters:
+    HouseId:
+      name: houseId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    DeviceId:
+      name: deviceId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+  responses:
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+  schemas:
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        traceId: { type: string }
+    DeviceType:
+      type: string
+      enum:
+        - THERMOSTAT
+        - RELAY
+        - LOCK
+        - CAMERA
+        - GATE
+        - SENSOR
+        - LIGHT
+    DeviceState:
+      type: string
+      enum: [ONLINE, OFFLINE, UNKNOWN]
+    Device:
+      type: object
+      required: [id, houseId, type, state]
+      properties:
+        id: { type: string, format: uuid }
+        houseId: { type: string, format: uuid }
+        type: { $ref: '#/components/schemas/DeviceType' }
+        name: { type: string }
+        serial: { type: string, description: Серийный номер устройства (devices.serial) }
+        state: { $ref: '#/components/schemas/DeviceState' }
+        lastSeenAt: { type: string, format: date-time, nullable: true }
+        createdAt: { type: string, format: date-time }
+    DeviceUpdate:
+      type: object
+      properties:
+        name: { type: string }
