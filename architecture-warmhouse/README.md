@@ -73,19 +73,39 @@ http://127.0.0.1:8000/architecture/context/
 
 **Диаграмма контейнеров (Containers)**
 
-Добавьте диаграмму.
+http://127.0.0.1:8000/architecture/container/
 
 **Диаграмма компонентов (Components)**
 
-Добавьте диаграмму для каждого из выделенных микросервисов.
+1. User&House Service - http://127.0.0.1:8000/architecture/User%26HouseService/
+2. Device Service - http://127.0.0.1:8000/architecture/DeviceService/
+3. Heating Service - http://127.0.0.1:8000/architecture/HeatingService/
+4. Lightning Service - http://127.0.0.1:8000/architecture/LightningService/
+5. Surveillance Service - http://127.0.0.1:8000/architecture/SurveillanceService/
+6. Notification Service - http://127.0.0.1:8000/architecture/NotificationService/
 
 **Диаграмма кода (Code)**
 
-Добавьте одну диаграмму или несколько.
+Насколько я понимаю, диаграмма кода не является обязательной в разрезе C4 нотации 
+И обычно делают диаграммы кода для самых сложных компонентов, у меня это: 
+1. Компонент управления пользователями и домами - http://127.0.0.1:8000/architecture/User%26HouseServiceCode/
+2. Компонент управления устройствами - http://127.0.0.1:8000/architecture/DeviceServiceCode/
+
+Остальные компонентны идентичны друг другу и попроще, возможно не совсем целесообразно их отражать
+Если я не прав, просьба отметить это на ревью - доработаю все что нужно
+
+FYI: Не совсем сейчас понимаю, как сделать сервер статичным когда ревьюер будет проверять задание. Потому что если я закрою терминал, то сервер упадет и будет недоступен. Тут просьба подсказать, как сделать.
 
 # Задание 3. Разработка ER-диаграммы
 
-Добавьте сюда ER-диаграмму. Она должна отражать ключевые сущности системы, их атрибуты и тип связей между ними.
+ER диаграммы были спроектированы под каждую БД микросервисов 
+
+1. User&House Service - http://127.0.0.1:8000/architecture/ERD/User%26HouseServiceERD/
+2. Device Service - http://127.0.0.1:8000/architecture/ERD/DeviceServiceERD/
+3. Heating Service - http://127.0.0.1:8000/architecture/ERD/HeatingServiceERD/
+4. Lightning Service - http://127.0.0.1:8000/architecture/ERD/LightningServiceERD/
+5. Surveillance Service - http://127.0.0.1:8000/architecture/ERD/SurveillanceService/
+6. Notification Service - http://127.0.0.1:8000/architecture/ERD/NotificationServiceERD/
 
 # Задание 4. Создание и документирование API
 
