@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>DeviceServiceCode - FitLife Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/mkdocs_puml/puml.css" rel="stylesheet" />
+        <link href="../../assets/mkdocs_puml/interaction.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "DeviceServiceCode";
+        var mkdocs_page_input_path = "architecture\\DeviceServiceCode.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> FitLife Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Welcome to MkDocs</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../AccessGateService/">AccessGateService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../DeviceService/">DeviceService</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">DeviceServiceCode</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../HeatingService/">HeatingService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../LightningService/">LightningService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../NotificationService/">NotificationService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SurveillanceService/">SurveillanceService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../User%26HouseService/">User&HouseService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../User%26HouseServiceCode/">User&HouseServiceCode</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../container/">Container</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../context/">Context</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">FitLife Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Architecture</li>
+      <li class="breadcrumb-item active">DeviceServiceCode</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class='puml-container'><div class="puml light" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" data-diagram-type="CLASS" style="width:765px;height:314px;background:#FFFFFF;" width="765px" height="314px" viewBox="0 0 765 314" zoomAndPan="magnify" preserveAspectRatio="xMidYMid meet" contentStyleType="text/css" class="diagram"><?plantuml 1.2026.9?><defs/><g font-family="sans-serif" lengthAdjust="spacing"><g class="entity" data-qualified-name="DeviceState" id="ent0001" data-source-line="6"><rect x="7" y="199.79" width="97.21" height="99.484" fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/><text x="13.137" y="217.785" fill="#000" font-size="14" textLength="84.937">DeviceState</text><line x1="8" y1="226.087" x2="103.21" y2="226.087" style="stroke:#181818;stroke-width:0.5;"/><text x="13" y="243.082" fill="#000" font-size="14" textLength="75.77">Registered</text><text x="13" y="259.379" fill="#000" font-size="14" textLength="85.21">Provisioning</text><text x="13" y="275.676" fill="#000" font-size="14" textLength="43.552">Active</text><text x="13" y="291.973" fill="#000" font-size="14" textLength="46.143">Offline</text></g><g class="entity" data-qualified-name="Device" id="ent0002" data-source-line="13"><rect x="245.69" y="7" width="165.829" height="115.781" fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/><text x="304.665" y="24.995" fill="#000" font-size="14" textLength="47.879">Device</text><line x1="246.69" y1="33.297" x2="410.519" y2="33.297" style="stroke:#181818;stroke-width:0.5;"/><text x="251.69" y="50.292" fill="#000" font-size="14" textLength="57.347">id: UUID</text><text x="251.69" y="66.589" fill="#000" font-size="14" textLength="88.97">serial: String</text><text x="251.69" y="82.886" fill="#000" font-size="14" textLength="129.568">state: DeviceState</text><text x="251.69" y="99.183" fill="#000" font-size="14" textLength="153.829">reported: ReportState</text><text x="251.69" y="115.479" fill="#000" font-size="14" textLength="151.997">desired: DesiredState</text></g><g class="entity" data-qualified-name="ProvisioningSession" id="ent0003" data-source-line="21"><rect x="139.52" y="199.79" width="176.179" height="99.484" fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/><text x="158.296" y="217.785" fill="#000" font-size="14" textLength="138.626">ProvisioningSession</text><line x1="140.52" y1="226.087" x2="314.699" y2="226.087" style="stroke:#181818;stroke-width:0.5;"/><text x="145.52" y="243.082" fill="#000" font-size="14" textLength="109.409">sessionId: UUID</text><text x="145.52" y="259.379" fill="#000" font-size="14" textLength="103.571">deviceId: UUID</text><text x="145.52" y="275.676" fill="#000" font-size="14" textLength="131.353">claimToken: String</text><text x="145.52" y="291.973" fill="#000" font-size="14" textLength="164.179">tokenExpiresAt: Instant</text></g><g class="entity" data-qualified-name="ReportState" id="ent0004" data-source-line="28"><rect x="351.06" y="224.23" width="159.082" height="50.594" fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/><text x="388.553" y="242.225" fill="#000" font-size="14" textLength="84.096">ReportState</text><line x1="352.06" y1="250.527" x2="509.142" y2="250.527" style="stroke:#181818;stroke-width:0.5;"/><text x="357.06" y="267.522" fill="#000" font-size="14" textLength="147.082">temperature: Double</text></g><g class="entity" data-qualified-name="DesiredState" id="ent0005" data-source-line="32"><rect x="545.13" y="224.23" width="204.958" height="50.594" fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/><text x="602.164" y="242.225" fill="#000" font-size="14" textLength="90.891">DesiredState</text><line x1="546.13" y1="250.527" x2="749.088" y2="250.527" style="stroke:#181818;stroke-width:0.5;"/><text x="551.13" y="267.522" fill="#000" font-size="14" textLength="192.958">targetTemperature: Double</text></g><g class="link" data-entity-1="ent0002" data-entity-2="ent0003" id="lnk6" data-source-line="36" data-link-type="dependency"><path d="M296.93,123.18 C283.39,147.66 270.17,171.565 257.17,195.065" style="stroke:#181818;stroke-width:1;" fill="none" id="Device-to-ProvisioningSession" codeLine="36"/><polygon points="254.75,199.44,262.607,193.501,257.17,195.065,255.606,189.628,254.75,199.44" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/><text x="279.1" y="165.857" fill="#000" font-size="13" textLength="54.787">deviceId</text><text x="284.821" y="142.861" fill="#000" font-size="13">1</text><text x="232.839" y="188.777" fill="#000" font-size="13" textLength="24.807">0..1</text></g><g class="link" data-entity-1="ent0002" data-entity-2="ent0001" id="lnk7" data-source-line="37" data-link-type="dependency"><path d="M245.23,118.16 C207.17,142.44 161.73,172.03 121.6,199.79 C115.98,203.68 114.202,204.891 108.432,209.061" style="stroke:#181818;stroke-width:1;" fill="none" id="Device-to-DeviceState" codeLine="37"/><polygon points="104.38,211.99,114.017,209.96,108.432,209.061,109.331,203.476,104.38,211.99" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/></g><g class="link" data-entity-1="ent0002" data-entity-2="ent0004" id="lnk8" data-source-line="38" data-link-type="composition"><path d="M366.452,133.656 C385.382,167.546 402.53,198.27 416.88,223.95" style="stroke:#181818;stroke-width:1;" fill="none" id="Device-backto-ReportState" codeLine="38"/><polygon points="360.6,123.18,360.034,130.369,366.452,133.656,367.018,126.468,360.6,123.18" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/><text x="386.71" y="165.857" fill="#000" font-size="13" textLength="56.24">reported</text><text x="404.594" y="212.971" fill="#000" font-size="13">1</text></g><g class="link" data-entity-1="ent0002" data-entity-2="ent0005" id="lnk9" data-source-line="39" data-link-type="composition"><path d="M422.414,119.602 C484.074,154.902 555.13,195.59 604.33,223.75" style="stroke:#181818;stroke-width:1;" fill="none" id="Device-backto-DesiredState" codeLine="39"/><polygon points="412,113.64,415.22,120.092,422.414,119.602,419.194,113.15,412,113.64" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/><text x="508.2" y="165.857" fill="#000" font-size="13" textLength="48.229">desired</text><text x="585.428" y="213.137" fill="#000" font-size="13">1</text></g><?plantuml-src RP1BRuCm48Jl_0etnqhWzCgXKgJqWAggLKZEbMCsiC8so5xJb_hVQqCUfCfjFFBkV3jtQAJo5R26g7SvvrPyP3LIu_VUWPMT8J2KoKxp5smRWUhPYW78STrMdNJllTUAQ-48BAS6D3XUmK5uHLnXtL0MFoIkHTCBApIJIZYt8hAuzmH522Zn6zWoQJ1GWExfYsdGUx1kiYHQgI19m7ZDrZ2WX9840Vj96Dj0ZJ4Qgl1uizs03Zk3fWxFbIGS88ZNmq6XWUGtISRquvPn0LOvs-sATP3XN1GgPsLWCpMBJip9vw71jD1tbY3CRKPryYjmQAEzdiJadpFdS2Mug4O0D-dYmb6DSJCZB42zxLemSpYAnjDd7x92dpahJC0rn2wHCxunYaAxO0Lv6u_g_5vTTNAXdduBMmDjRyyS6rmyB5YQFhB5Cik2l7LZVhxdD1G7vfKUxViq7VVDgVDps_z_NU7cf_B_0000?></g></svg></div><div class="puml dark" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" data-diagram-type="CLASS" style="width:765px;height:314px;background:#1B1B1B;" width="765px" height="314px" viewBox="0 0 765 314" zoomAndPan="magnify" preserveAspectRatio="xMidYMid meet" contentStyleType="text/css" class="diagram"><?plantuml 1.2026.9?><defs/><g font-family="sans-serif" lengthAdjust="spacing"><rect x="0" y="0" width="765" height="314" fill="#1B1B1B" style="stroke:none;"/><g class="entity" data-qualified-name="DeviceState" id="ent0001" data-source-line="6"><rect x="7" y="199.79" width="97.21" height="99.484" fill="#313139" style="stroke:#E7E7E7;stroke-width:0.5;" rx="2.5" ry="2.5"/><text x="13.137" y="217.785" fill="#FFF" font-size="14" textLength="84.937">DeviceState</text><line x1="8" y1="226.087" x2="103.21" y2="226.087" style="stroke:#E7E7E7;stroke-width:0.5;"/><text x="13" y="243.082" fill="#FFF" font-size="14" textLength="75.77">Registered</text><text x="13" y="259.379" fill="#FFF" font-size="14" textLength="85.21">Provisioning</text><text x="13" y="275.676" fill="#FFF" font-size="14" textLength="43.552">Active</text><text x="13" y="291.973" fill="#FFF" font-size="14" textLength="46.143">Offline</text></g><g class="entity" data-qualified-name="Device" id="ent0002" data-source-line="13"><rect x="245.69" y="7" width="165.829" height="115.781" fill="#313139" style="stroke:#E7E7E7;stroke-width:0.5;" rx="2.5" ry="2.5"/><text x="304.665" y="24.995" fill="#FFF" font-size="14" textLength="47.879">Device</text><line x1="246.69" y1="33.297" x2="410.519" y2="33.297" style="stroke:#E7E7E7;stroke-width:0.5;"/><text x="251.69" y="50.292" fill="#FFF" font-size="14" textLength="57.347">id: UUID</text><text x="251.69" y="66.589" fill="#FFF" font-size="14" textLength="88.97">serial: String</text><text x="251.69" y="82.886" fill="#FFF" font-size="14" textLength="129.568">state: DeviceState</text><text x="251.69" y="99.183" fill="#FFF" font-size="14" textLength="153.829">reported: ReportState</text><text x="251.69" y="115.479" fill="#FFF" font-size="14" textLength="151.997">desired: DesiredState</text></g><g class="entity" data-qualified-name="ProvisioningSession" id="ent0003" data-source-line="21"><rect x="139.52" y="199.79" width="176.179" height="99.484" fill="#313139" style="stroke:#E7E7E7;stroke-width:0.5;" rx="2.5" ry="2.5"/><text x="158.296" y="217.785" fill="#FFF" font-size="14" textLength="138.626">ProvisioningSession</text><line x1="140.52" y1="226.087" x2="314.699" y2="226.087" style="stroke:#E7E7E7;stroke-width:0.5;"/><text x="145.52" y="243.082" fill="#FFF" font-size="14" textLength="109.409">sessionId: UUID</text><text x="145.52" y="259.379" fill="#FFF" font-size="14" textLength="103.571">deviceId: UUID</text><text x="145.52" y="275.676" fill="#FFF" font-size="14" textLength="131.353">claimToken: String</text><text x="145.52" y="291.973" fill="#FFF" font-size="14" textLength="164.179">tokenExpiresAt: Instant</text></g><g class="entity" data-qualified-name="ReportState" id="ent0004" data-source-line="28"><rect x="351.06" y="224.23" width="159.082" height="50.594" fill="#313139" style="stroke:#E7E7E7;stroke-width:0.5;" rx="2.5" ry="2.5"/><text x="388.553" y="242.225" fill="#FFF" font-size="14" textLength="84.096">ReportState</text><line x1="352.06" y1="250.527" x2="509.142" y2="250.527" style="stroke:#E7E7E7;stroke-width:0.5;"/><text x="357.06" y="267.522" fill="#FFF" font-size="14" textLength="147.082">temperature: Double</text></g><g class="entity" data-qualified-name="DesiredState" id="ent0005" data-source-line="32"><rect x="545.13" y="224.23" width="204.958" height="50.594" fill="#313139" style="stroke:#E7E7E7;stroke-width:0.5;" rx="2.5" ry="2.5"/><text x="602.164" y="242.225" fill="#FFF" font-size="14" textLength="90.891">DesiredState</text><line x1="546.13" y1="250.527" x2="749.088" y2="250.527" style="stroke:#E7E7E7;stroke-width:0.5;"/><text x="551.13" y="267.522" fill="#FFF" font-size="14" textLength="192.958">targetTemperature: Double</text></g><g class="link" data-entity-1="ent0002" data-entity-2="ent0003" id="lnk6" data-source-line="36" data-link-type="dependency"><path d="M296.93,123.18 C283.39,147.66 270.17,171.565 257.17,195.065" style="stroke:#E7E7E7;stroke-width:1;" fill="none" id="Device-to-ProvisioningSession" codeLine="36"/><polygon points="254.75,199.44,262.607,193.501,257.17,195.065,255.606,189.628,254.75,199.44" fill="#E7E7E7" style="stroke:#E7E7E7;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/><text x="279.1" y="165.857" fill="#FFF" font-size="13" textLength="54.787">deviceId</text><text x="284.821" y="142.861" fill="#FFF" font-size="13">1</text><text x="232.839" y="188.777" fill="#FFF" font-size="13" textLength="24.807">0..1</text></g><g class="link" data-entity-1="ent0002" data-entity-2="ent0001" id="lnk7" data-source-line="37" data-link-type="dependency"><path d="M245.23,118.16 C207.17,142.44 161.73,172.03 121.6,199.79 C115.98,203.68 114.202,204.891 108.432,209.061" style="stroke:#E7E7E7;stroke-width:1;" fill="none" id="Device-to-DeviceState" codeLine="37"/><polygon points="104.38,211.99,114.017,209.96,108.432,209.061,109.331,203.476,104.38,211.99" fill="#E7E7E7" style="stroke:#E7E7E7;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/></g><g class="link" data-entity-1="ent0002" data-entity-2="ent0004" id="lnk8" data-source-line="38" data-link-type="composition"><path d="M366.452,133.656 C385.382,167.546 402.53,198.27 416.88,223.95" style="stroke:#E7E7E7;stroke-width:1;" fill="none" id="Device-backto-ReportState" codeLine="38"/><polygon points="360.6,123.18,360.034,130.369,366.452,133.656,367.018,126.468,360.6,123.18" fill="#E7E7E7" style="stroke:#E7E7E7;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/><text x="386.71" y="165.857" fill="#FFF" font-size="13" textLength="56.24">reported</text><text x="404.594" y="212.971" fill="#FFF" font-size="13">1</text></g><g class="link" data-entity-1="ent0002" data-entity-2="ent0005" id="lnk9" data-source-line="39" data-link-type="composition"><path d="M422.414,119.602 C484.074,154.902 555.13,195.59 604.33,223.75" style="stroke:#E7E7E7;stroke-width:1;" fill="none" id="Device-backto-DesiredState" codeLine="39"/><polygon points="412,113.64,415.22,120.092,422.414,119.602,419.194,113.15,412,113.64" fill="#E7E7E7" style="stroke:#E7E7E7;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/><text x="508.2" y="165.857" fill="#FFF" font-size="13" textLength="48.229">desired</text><text x="585.428" y="213.137" fill="#FFF" font-size="13">1</text></g><?plantuml-src RP1BRuCm48Jl_0etnqhWzCgXKgJqWAggLKZEbMCsiC8so5xJb_hVQqCUfCfjFB0xtyuT6gby1QmXwbtEkHKVMOtK-BrtO6Ld20nbijFy1Tj6e7gsOW1oNBTL9zrxxxNYMZW2owa13OvNS11U4Q-4RRFuFN4jcbvOePbKmhaLaSMz9oZ2_XA_WIsJ1WC4w9w-c0Qz1-icIwAL2f84ZDTi3GDAA4aGi9-4iGtK69EX2eytsmtei3Dewl1SIS81WdWz71GQI7wJP4m_RXaNO9MptQvO1nckHQ5oLWOsKxFen9ny7XfC2trd2SBSPbGdlmA7DjhhIKp-ENCELuABQWHmaouk7DKODpF20jJRhWKpXwDeF7ts8IlqcRF215n3x18vunkZABGBLf2tyQZExzLL9nVgwMzXQw3jxPbZWuk71KlJHxPOPbcGjsxCp_USXkB0lDAZVP-cuxuvTNvk-_zVLxZvgVm_?></g></svg></div></div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../DeviceService/" class="btn btn-neutral float-left" title="DeviceService"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../HeatingService/" class="btn btn-neutral float-right" title="HeatingService">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../DeviceService/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../HeatingService/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+      <script src="../../assets/mkdocs_puml/puml.js"></script>
+      <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+      <script src="../../assets/mkdocs_puml/interaction.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
