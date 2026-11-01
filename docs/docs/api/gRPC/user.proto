@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package users_house.v1;
+
+import "common/v1/types.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/warmhouse/api/gen/users_house/v1;usershousev1";
+
+service UserService {
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {
+      get: "/v1/users"
+    };
+  }
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {
+      get: "/v1/users/{user_id}"
+    };
+  }
+}
+
+enum UserRole {
+  USER_ROLE_UNSPECIFIED = 0;
+  USER_ROLE_USER = 1;
+  USER_ROLE_SUPPORT = 2;
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string phone = 3;
+  UserRole role = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+message ListUsersRequest {
+  common.v1.PageRequest page = 1;
+}
+
+message ListUsersResponse {
+  repeated User users = 1;
+  common.v1.PageResponse page = 2;
+}
+
+message GetUserRequest {
+  string user_id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}

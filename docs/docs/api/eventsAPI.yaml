@@ -1,0 +1,642 @@
+asyncapi: 3.0.0
+id: 'urn:warmhouse:events:v1'
+
+info:
+  title: Warmhouse Async API
+  version: 1.0.0
+  description: |
+    Асинхронный контракт взаимодействия микросервисов "Теплый дом" через Kafka
+    Описывает события: кто публикует, кто потребляет, и структуру сообщений.
+defaultContentType: application/json
+servers:
+  kafkaProduction:
+    host: kafka.warmhouse.internal:9092
+    protocol: kafka-secure
+    protocolVersion: '3.5'
+    security:
+      - $ref: '#/components/securitySchemes/kafkaSaslScram'
+    bindings:
+      kafka:
+        schemaRegistryUrl: https://schema-registry.warmhouse.internal
+        schemaRegistryVendor: confluent
+channels:
+  # ─────────────────────────────────────────────
+  # 1. Device state changes
+  # ─────────────────────────────────────────────
+  deviceStateChanged:
+    address: warmhouse.device.state.changed
+    title: Device state changed
+    description: |
+      Устройство перешло в новое состояние (registered → provisioning → active → offline).
+      Публикует Device Service при любом изменении статуса.
+    messages:
+      DeviceStateChanged:
+        $ref: '#/components/messages/DeviceStateChanged'
+    bindings:
+      kafka:
+        topic: warmhouse.device.state.changed
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [delete]
+          retention.ms: 604800000     # 7 дней
+
+  # ─────────────────────────────────────────────
+  # 2. Device reported temperature
+  # ─────────────────────────────────────────────
+  deviceReportedTemperature:
+    address: warmhouse.device.reported.temperature
+    title: Device reported temperature
+    description: |
+      Новое показание температуры с датчика. Device Service публикует после
+      получения данных с MQTT-брокера.
+    messages:
+      DeviceReportedTemperature:
+        $ref: '#/components/messages/DeviceReportedTemperature'
+    bindings:
+      kafka:
+        topic: warmhouse.device.reported.temperature
+        partitions: 12
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [delete]
+          retention.ms: 86400000       # 1 день
+
+  # ─────────────────────────────────────────────
+  # 3. Heating history recorded
+  # ─────────────────────────────────────────────
+  heatingHistoryRecorded:
+    address: warmhouse.heating.history.recorded
+    title: Heating history recorded
+    description: |
+      Точка истории температур записана Heating Service.
+      Используется аналитикой и Web-клиентом для графиков.
+    messages:
+      HeatingHistoryRecorded:
+        $ref: '#/components/messages/HeatingHistoryRecorded'
+    bindings:
+      kafka:
+        topic: warmhouse.heating.history.recorded
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [delete]
+          retention.ms: 2592000000     # 30 дней
+
+  # ─────────────────────────────────────────────
+  # 4. Heating schedule triggered
+  # ─────────────────────────────────────────────
+  heatingScheduleTriggered:
+    address: warmhouse.heating.schedule.triggered
+    title: Heating schedule triggered
+    description: |
+      Сработало расписание отопления. Notification Service превращает это
+      в push-уведомление, если пользователь подписан.
+    messages:
+      HeatingScheduleTriggered:
+        $ref: '#/components/messages/HeatingScheduleTriggered'
+    bindings:
+      kafka:
+        topic: warmhouse.heating.schedule.triggered
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [delete]
+          retention.ms: 604800000
+
+  # ─────────────────────────────────────────────
+  # 5. Lighting schedule triggered
+  # ─────────────────────────────────────────────
+  lightingScheduleTriggered:
+    address: warmhouse.lighting.schedule.triggered
+    title: Lighting schedule triggered
+    description: Сработало расписание освещения.
+    messages:
+      LightingScheduleTriggered:
+        $ref: '#/components/messages/LightingScheduleTriggered'
+    bindings:
+      kafka:
+        topic: warmhouse.lighting.schedule.triggered
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [delete]
+          retention.ms: 604800000
+
+  # ─────────────────────────────────────────────
+  # 6. Access door opened
+  # ─────────────────────────────────────────────
+  accessDoorOpened:
+    address: warmhouse.access.door.opened
+    title: Access door opened
+    description: |
+      Дверь/ворота открыты. Notification — для push, Surveillance —
+      для запуска записи по триггеру.
+    messages:
+      AccessDoorOpened:
+        $ref: '#/components/messages/AccessDoorOpened'
+    bindings:
+      kafka:
+        topic: warmhouse.access.door.opened
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [delete]
+          retention.ms: 2592000000
+
+  # ─────────────────────────────────────────────
+  # 7. Motion detected
+  # ─────────────────────────────────────────────
+  surveillanceMotionDetected:
+    address: warmhouse.surveillance.motion.detected
+    title: Motion detected
+    description: Камера зафиксировала движение.
+    messages:
+      SurveillanceMotionDetected:
+        $ref: '#/components/messages/SurveillanceMotionDetected'
+    bindings:
+      kafka:
+        topic: warmhouse.surveillance.motion.detected
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [delete]
+          retention.ms: 604800000
+
+  # ─────────────────────────────────────────────
+  # 8. Recording ready
+  # ─────────────────────────────────────────────
+  surveillanceRecordingReady:
+    address: warmhouse.surveillance.recording.ready
+    title: Recording ready
+    description: Запись с камеры готова к воспроизведению.
+    messages:
+      SurveillanceRecordingReady:
+        $ref: '#/components/messages/SurveillanceRecordingReady'
+    bindings:
+      kafka:
+        topic: warmhouse.surveillance.recording.ready
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [delete]
+          retention.ms: 2592000000
+
+  # ─────────────────────────────────────────────
+  # 9. Notification requested (fan-in)
+  # ─────────────────────────────────────────────
+  notificationRequested:
+    address: warmhouse.notification.requested
+    title: Notification requested
+    description: |
+      Универсальная заявка на отправку уведомления. Публикуют все сервисы,
+      потребляет Notification Worker → FCM/APNS/SMTP/SMS-Gateway.
+    messages:
+      NotificationRequested:
+        $ref: '#/components/messages/NotificationRequested'
+    bindings:
+      kafka:
+        topic: warmhouse.notification.requested
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [delete]
+          retention.ms: 86400000
+
+operations:
+  # ─────────────────────────────────────────────
+  # Producers
+  # ─────────────────────────────────────────────
+  publishDeviceStateChanged:
+    action: send
+    channel:
+      $ref: '#/channels/deviceStateChanged'
+    summary: Device Service публикует смену состояния
+  publishDeviceReportedTemperature:
+    action: send
+    channel:
+      $ref: '#/channels/deviceReportedTemperature'
+    summary: Device Service публикует новое показание температуры
+  publishHeatingHistoryRecorded:
+    action: send
+    channel:
+      $ref: '#/channels/heatingHistoryRecorded'
+    summary: Heating Service публикует точку истории
+  publishHeatingScheduleTriggered:
+    action: send
+    channel:
+      $ref: '#/channels/heatingScheduleTriggered'
+    summary: Heating Service публикует срабатывание расписания
+  publishLightingScheduleTriggered:
+    action: send
+    channel:
+      $ref: '#/channels/lightingScheduleTriggered'
+    summary: Lighting Service публикует срабатывание расписания
+  publishAccessDoorOpened:
+    action: send
+    channel:
+      $ref: '#/channels/accessDoorOpened'
+    summary: Access Service публикует открытие двери
+  publishSurveillanceMotionDetected:
+    action: send
+    channel:
+      $ref: '#/channels/surveillanceMotionDetected'
+    summary: Surveillance Service публикует детект движения
+  publishSurveillanceRecordingReady:
+    action: send
+    channel:
+      $ref: '#/channels/surveillanceRecordingReady'
+    summary: Surveillance Service публикует готовность записи
+  publishNotificationRequested:
+    action: send
+    channel:
+      $ref: '#/channels/notificationRequested'
+    summary: Любой сервис публикует заявку на уведомление
+
+  # ─────────────────────────────────────────────
+  # Consumers
+  # ─────────────────────────────────────────────
+  consumeDeviceStateChanged:
+    action: receive
+    channel:
+      $ref: '#/channels/deviceStateChanged'
+    summary: Notification + Users&Houses слушают изменения состояния
+  consumeDeviceReportedTemperature:
+    action: receive
+    channel:
+      $ref: '#/channels/deviceReportedTemperature'
+    summary: Heating + Notification слушают показания датчиков
+  consumeHeatingHistoryRecorded:
+    action: receive
+    channel:
+      $ref: '#/channels/heatingHistoryRecorded'
+    summary: Analytics + Web слушают историю
+  consumeHeatingScheduleTriggered:
+    action: receive
+    channel:
+      $ref: '#/channels/heatingScheduleTriggered'
+    summary: Notification слушает срабатывания отопления
+  consumeLightingScheduleTriggered:
+    action: receive
+    channel:
+      $ref: '#/channels/lightingScheduleTriggered'
+    summary: Notification слушает срабатывания освещения
+  consumeAccessDoorOpened:
+    action: receive
+    channel:
+      $ref: '#/channels/accessDoorOpened'
+    summary: Notification + Surveillance слушают открытие двери
+  consumeSurveillanceMotionDetected:
+    action: receive
+    channel:
+      $ref: '#/channels/surveillanceMotionDetected'
+    summary: Notification слушает детект движения
+  consumeSurveillanceRecordingReady:
+    action: receive
+    channel:
+      $ref: '#/channels/surveillanceRecordingReady'
+    summary: Web слушает готовность записи
+  consumeNotificationRequested:
+    action: receive
+    channel:
+      $ref: '#/channels/notificationRequested'
+    summary: Notification Worker слушает заявки
+
+components:
+
+  securitySchemes:
+    kafkaSaslScram:
+      type: scramSha512
+      description: SASL/SCRAM-SHA-512 аутентификация к Kafka
+
+  # ─────────────────────────────────────────────
+  # Message definitions
+  # ─────────────────────────────────────────────
+  messages:
+
+    DeviceStateChanged:
+      name: DeviceStateChanged
+      title: Device state changed
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          x-event-id: { type: string, format: uuid }
+          x-source-service: { type: string, example: device-service }
+      payload:
+        $ref: '#/components/schemas/DeviceStateChangedEnvelope'
+
+    DeviceReportedTemperature:
+      name: DeviceReportedTemperature
+      title: Device reported temperature
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/DeviceReportedTemperatureEnvelope'
+
+    HeatingHistoryRecorded:
+      name: HeatingHistoryRecorded
+      title: Heating history recorded
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/HeatingHistoryRecordedEnvelope'
+
+    HeatingScheduleTriggered:
+      name: HeatingScheduleTriggered
+      title: Heating schedule triggered
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/HeatingScheduleTriggeredEnvelope'
+
+    LightingScheduleTriggered:
+      name: LightingScheduleTriggered
+      title: Lighting schedule triggered
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/LightingScheduleTriggeredEnvelope'
+
+    AccessDoorOpened:
+      name: AccessDoorOpened
+      title: Access door opened
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/AccessDoorOpenedEnvelope'
+
+    SurveillanceMotionDetected:
+      name: SurveillanceMotionDetected
+      title: Motion detected
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SurveillanceMotionDetectedEnvelope'
+
+    SurveillanceRecordingReady:
+      name: SurveillanceRecordingReady
+      title: Recording ready
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SurveillanceRecordingReadyEnvelope'
+
+    NotificationRequested:
+      name: NotificationRequested
+      title: Notification requested
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/NotificationRequestedEnvelope'
+
+  # ─────────────────────────────────────────────
+  # Schemas
+  # ─────────────────────────────────────────────
+  schemas:
+
+    # ─── Общий конверт (CloudEvents-подобный) ───
+    EnvelopeBase:
+      type: object
+      required: [id, type, source, specversion, time, data]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Уникальный ID события (для дедупликации)
+        type:
+          type: string
+          description: Тип события, совпадает с именем топика
+        source:
+          type: string
+          description: Сервис-эмиттер
+          enum:
+            - device-service
+            - heating-service
+            - lighting-service
+            - access-service
+            - surveillance-service
+            - notification-service
+        specversion:
+          type: string
+          const: '1.0'
+        time:
+          type: string
+          format: date-time
+          description: Время генерации события (RFC 3339)
+        subject:
+          type: string
+          description: Опциональный субъект (ID агрегата — deviceId, zoneId, doorId, ...)
+        datacontenttype:
+          type: string
+          const: application/json
+        traceparent:
+          type: string
+          description: W3C traceparent для сквозной трассировки (OpenTelemetry)
+
+    # ─── 1. Device state changed ───
+    DeviceStateChangedEnvelope:
+      allOf:
+        - $ref: '#/components/schemas/EnvelopeBase'
+        - type: object
+          properties:
+            type:
+              const: warmhouse.device.state.changed
+            data:
+              $ref: '#/components/schemas/DeviceStateChangedData'
+
+    DeviceStateChangedData:
+      type: object
+      required: [deviceId, houseId, newState]
+      properties:
+        deviceId:  { type: string, format: uuid }
+        houseId:   { type: string, format: uuid }
+        serial:    { type: string }
+        previousState:
+          type: string
+          enum: [registered, provisioning, active, offline]
+        newState:
+          type: string
+          enum: [registered, provisioning, active, offline]
+
+    # ─── 2. Device reported temperature ───
+    DeviceReportedTemperatureEnvelope:
+      allOf:
+        - $ref: '#/components/schemas/EnvelopeBase'
+        - type: object
+          properties:
+            type:
+              const: warmhouse.device.reported.temperature
+            data:
+              $ref: '#/components/schemas/DeviceReportedTemperatureData'
+
+    DeviceReportedTemperatureData:
+      type: object
+      required: [deviceId, houseId, temperature]
+      properties:
+        deviceId:    { type: string, format: uuid }
+        houseId:     { type: string, format: uuid }
+        temperature:
+          type: number
+          format: double
+          description: Температура в градусах Цельсия
+        recordedAt:
+          type: string
+          format: date-time
+
+    # ─── 3. Heating history recorded ───
+    HeatingHistoryRecordedEnvelope:
+      allOf:
+        - $ref: '#/components/schemas/EnvelopeBase'
+        - type: object
+          properties:
+            type:
+              const: warmhouse.heating.history.recorded
+            data:
+              $ref: '#/components/schemas/HeatingHistoryRecordedData'
+
+    HeatingHistoryRecordedData:
+      type: object
+      required: [zoneId, houseId, temperature, recordedAt]
+      properties:
+        zoneId:      { type: string, format: uuid }
+        houseId:     { type: string, format: uuid }
+        deviceId:    { type: string, format: uuid }
+        temperature: { type: number, format: double }
+        recordedAt:  { type: string, format: date-time }
+
+    # ─── 4. Heating schedule triggered ───
+    HeatingScheduleTriggeredEnvelope:
+      allOf:
+        - $ref: '#/components/schemas/EnvelopeBase'
+        - type: object
+          properties:
+            type:
+              const: warmhouse.heating.schedule.triggered
+            data:
+              $ref: '#/components/schemas/HeatingScheduleTriggeredData'
+
+    HeatingScheduleTriggeredData:
+      type: object
+      required: [zoneId, houseId, scheduleId, action]
+      properties:
+        zoneId:      { type: string, format: uuid }
+        houseId:     { type: string, format: uuid }
+        scheduleId:  { type: string, format: uuid }
+        action:
+          type: string
+          enum: [start, stop, setpoint_reached]
+        targetTemperature: { type: number, format: double }
+
+    # ─── 5. Lighting schedule triggered ───
+    LightingScheduleTriggeredEnvelope:
+      allOf:
+        - $ref: '#/components/schemas/EnvelopeBase'
+        - type: object
+          properties:
+            type:
+              const: warmhouse.lighting.schedule.triggered
+            data:
+              $ref: '#/components/schemas/LightingScheduleTriggeredData'
+
+    LightingScheduleTriggeredData:
+      type: object
+      required: [groupId, houseId, scheduleId, action]
+      properties:
+        groupId:     { type: string, format: uuid }
+        houseId:     { type: string, format: uuid }
+        scheduleId:  { type: string, format: uuid }
+        action:
+          type: string
+          enum: [on, off, dim]
+        brightness:  { type: integer, minimum: 0, maximum: 100 }
+
+    # ─── 6. Access door opened ───
+    AccessDoorOpenedEnvelope:
+      allOf:
+        - $ref: '#/components/schemas/EnvelopeBase'
+        - type: object
+          properties:
+            type:
+              const: warmhouse.access.door.opened
+            data:
+              $ref: '#/components/schemas/AccessDoorOpenedData'
+
+    AccessDoorOpenedData:
+      type: object
+      required: [doorId, houseId, method]
+      properties:
+        doorId:   { type: string, format: uuid }
+        houseId:  { type: string, format: uuid }
+        userId:   { type: string, format: uuid, nullable: true }
+        method:
+          type: string
+          enum: [app, keycard, code, manual]
+        openedAt: { type: string, format: date-time }
+
+    # ─── 7. Motion detected ───
+    SurveillanceMotionDetectedEnvelope:
+      allOf:
+        - $ref: '#/components/schemas/EnvelopeBase'
+        - type: object
+          properties:
+            type:
+              const: warmhouse.surveillance.motion.detected
+            data:
+              $ref: '#/components/schemas/SurveillanceMotionDetectedData'
+
+    SurveillanceMotionDetectedData:
+      type: object
+      required: [cameraId, houseId, confidence]
+      properties:
+        cameraId:    { type: string, format: uuid }
+        houseId:     { type: string, format: uuid }
+        confidence:  { type: number, format: double, minimum: 0, maximum: 1 }
+        snapshotUrl: { type: string, format: uri }
+        detectedAt:  { type: string, format: date-time }
+
+    # ─── 8. Recording ready ───
+    SurveillanceRecordingReadyEnvelope:
+      allOf:
+        - $ref: '#/components/schemas/EnvelopeBase'
+        - type: object
+          properties:
+            type:
+              const: warmhouse.surveillance.recording.ready
+            data:
+              $ref: '#/components/schemas/SurveillanceRecordingReadyData'
+
+    SurveillanceRecordingReadyData:
+      type: object
+      required: [recordingId, cameraId, url]
+      properties:
+        recordingId: { type: string, format: uuid }
+        cameraId:    { type: string, format: uuid }
+        houseId:     { type: string, format: uuid }
+        url:         { type: string, format: uri }
+        startedAt:   { type: string, format: date-time }
+        endedAt:     { type: string, format: date-time }
+
+    # ─── 9. Notification requested ───
+    NotificationRequestedEnvelope:
+      allOf:
+        - $ref: '#/components/schemas/EnvelopeBase'
+        - type: object
+          properties:
+            type:
+              const: warmhouse.notification.requested
+            data:
+              $ref: '#/components/schemas/NotificationRequestedData'
+
+    NotificationRequestedData:
+      type: object
+      required: [userId, eventType, channels]
+      properties:
+        userId:    { type: string, format: uuid }
+        eventType:
+          type: string
+          enum: [temperature_alert, motion_detected, door_opened, system]
+        channels:
+          type: array
+          items:
+            type: string
+            enum: [push, email, sms]
+        title:
+          type: string
+        body:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true

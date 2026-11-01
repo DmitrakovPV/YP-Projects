@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package lighting.v1;
+
+import "common/v1/schedule.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/warmhouse/api/gen/lighting/v1;lightingv1";
+
+service LightingService {
+  rpc ListLightingGroups(ListLightingGroupsRequest) returns (ListLightingGroupsResponse) {
+    option (google.api.http) = { get: "/v1/lighting/groups" };
+  }
+  rpc CreateLightingGroup(CreateLightingGroupRequest) returns (CreateLightingGroupResponse) {
+    option (google.api.http) = {
+      post: "/v1/lighting/groups"
+      body: "*"
+    };
+  }
+  rpc ListLightingSchedules(ListLightingSchedulesRequest) returns (ListLightingSchedulesResponse) {
+    option (google.api.http) = { get: "/v1/lighting/groups/{group_id}/schedules" };
+  }
+  rpc CreateLightingSchedule(CreateLightingScheduleRequest) returns (CreateLightingScheduleResponse) {
+    option (google.api.http) = {
+      post: "/v1/lighting/groups/{group_id}/schedules"
+      body: "*"
+    };
+  }
+}
+
+message LightingGroup {
+  string id = 1;
+  string house_id = 2;
+  string name = 3;
+  repeated string device_ids = 4;
+}
+
+message ListLightingGroupsRequest {
+  string house_id = 1;
+}
+
+message ListLightingGroupsResponse {
+  repeated LightingGroup groups = 1;
+}
+
+message CreateLightingGroupRequest {
+  string house_id = 1;
+  string name = 2;
+  repeated string device_ids = 3;
+}
+
+message CreateLightingGroupResponse {
+  LightingGroup group = 1;
+}
+
+message ListLightingSchedulesRequest {
+  string group_id = 1;
+}
+
+message ListLightingSchedulesResponse {
+  repeated common.v1.Schedule schedules = 1;
+}
+
+message CreateLightingScheduleRequest {
+  string group_id = 1;
+  string name = 2;
+  string timezone = 3;
+  repeated common.v1.ScheduleSlot slots = 4;
+}
+
+message CreateLightingScheduleResponse {
+  common.v1.Schedule schedule = 1;
+}

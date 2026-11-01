@@ -1,0 +1,97 @@
+syntax = "proto3";
+
+package users_house.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/warmhouse/api/gen/users_house/v1;usershousev1";
+
+service HouseService {
+  rpc ListHouses(ListHousesRequest) returns (ListHousesResponse) {
+    option (google.api.http) = { get: "/v1/houses" };
+  }
+  rpc CreateHouse(CreateHouseRequest) returns (CreateHouseResponse) {
+    option (google.api.http) = {
+      post: "/v1/houses"
+      body: "*"
+    };
+  }
+  rpc GetHouse(GetHouseRequest) returns (GetHouseResponse) {
+    option (google.api.http) = { get: "/v1/houses/{house_id}" };
+  }
+  rpc UpdateHouse(UpdateHouseRequest) returns (UpdateHouseResponse) {
+    option (google.api.http) = {
+      patch: "/v1/houses/{house_id}"
+      body: "*"
+    };
+  }
+  rpc DeleteHouse(DeleteHouseRequest) returns (DeleteHouseResponse) {
+    option (google.api.http) = { delete: "/v1/houses/{house_id}" };
+  }
+}
+
+enum HouseState {
+  HOUSE_STATE_UNSPECIFIED = 0;
+  HOUSE_STATE_ACTIVE = 1;
+  HOUSE_STATE_INACTIVE = 2;
+}
+
+enum HouseMemberRole {
+  HOUSE_MEMBER_ROLE_UNSPECIFIED = 0;
+  HOUSE_MEMBER_ROLE_OWNER = 1;
+  HOUSE_MEMBER_ROLE_MEMBER = 2;
+  HOUSE_MEMBER_ROLE_GUEST = 3;
+}
+
+message House {
+  string id = 1;
+  string owner_id = 2;
+  string address = 3;
+  HouseState state = 4;
+  repeated HouseMember members = 5;
+}
+
+message HouseMember {
+  string user_id = 1;
+  HouseMemberRole role = 2;
+  google.protobuf.Timestamp joined_at = 3;
+}
+
+message ListHousesRequest {}
+
+message ListHousesResponse {
+  repeated House houses = 1;
+}
+
+message CreateHouseRequest {
+  string address = 1;
+}
+
+message CreateHouseResponse {
+  House house = 1;
+}
+
+message GetHouseRequest {
+  string house_id = 1;
+}
+
+message GetHouseResponse {
+  House house = 1;
+}
+
+message UpdateHouseRequest {
+  string house_id = 1;
+  optional string address = 2;
+  optional HouseState state = 3;
+}
+
+message UpdateHouseResponse {
+  House house = 1;
+}
+
+message DeleteHouseRequest {
+  string house_id = 1;
+}
+
+message DeleteHouseResponse {}

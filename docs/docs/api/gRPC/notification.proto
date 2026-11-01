@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package notification.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/warmhouse/api/gen/notification/v1;notificationv1";
+
+service NotificationService {
+  rpc ListSubscriptions(ListSubscriptionsRequest) returns (ListSubscriptionsResponse) {
+    option (google.api.http) = { get: "/v1/notifications/subscriptions" };
+  }
+  rpc CreateSubscription(CreateSubscriptionRequest) returns (CreateSubscriptionResponse) {
+    option (google.api.http) = {
+      post: "/v1/notifications/subscriptions"
+      body: "*"
+    };
+  }
+  rpc DeleteSubscription(DeleteSubscriptionRequest) returns (DeleteSubscriptionResponse) {
+    option (google.api.http) = { delete: "/v1/notifications/subscriptions/{subscription_id}" };
+  }
+}
+
+enum NotificationEventType {
+  NOTIFICATION_EVENT_TYPE_UNSPECIFIED = 0;
+  NOTIFICATION_EVENT_TYPE_TEMPERATURE_ALERT = 1;
+  NOTIFICATION_EVENT_TYPE_MOTION_DETECTED = 2;
+  NOTIFICATION_EVENT_TYPE_DOOR_OPENED = 3;
+  NOTIFICATION_EVENT_TYPE_SYSTEM = 4;
+}
+
+enum NotificationChannel {
+  NOTIFICATION_CHANNEL_UNSPECIFIED = 0;
+  NOTIFICATION_CHANNEL_PUSH = 1;
+  NOTIFICATION_CHANNEL_EMAIL = 2;
+  NOTIFICATION_CHANNEL_SMS = 3;
+}
+
+message NotificationSubscription {
+  string id = 1;
+  string user_id = 2;
+  NotificationEventType event_type = 3;
+  NotificationChannel channel = 4;
+  bool enabled = 5;
+}
+
+message ListSubscriptionsRequest {}
+
+message ListSubscriptionsResponse {
+  repeated NotificationSubscription subscriptions = 1;
+}
+
+message CreateSubscriptionRequest {
+  NotificationEventType event_type = 1;
+  NotificationChannel channel = 2;
+}
+
+message CreateSubscriptionResponse {
+  NotificationSubscription subscription = 1;
+}
+
+message DeleteSubscriptionRequest {
+  string subscription_id = 1;
+}
+
+message DeleteSubscriptionResponse {}

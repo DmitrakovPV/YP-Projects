@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package heating.v1;
+
+import "common/v1/schedule.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/warmhouse/api/gen/heating/v1;heatingv1";
+
+service HeatingService {
+  rpc ListHeatingZones(ListHeatingZonesRequest) returns (ListHeatingZonesResponse) {
+    option (google.api.http) = { get: "/v1/heating/zones" };
+  }
+  rpc CreateHeatingZone(CreateHeatingZoneRequest) returns (CreateHeatingZoneResponse) {
+    option (google.api.http) = {
+      post: "/v1/heating/zones"
+      body: "*"
+    };
+  }
+  rpc ListHeatingSchedules(ListHeatingSchedulesRequest) returns (ListHeatingSchedulesResponse) {
+    option (google.api.http) = { get: "/v1/heating/zones/{zone_id}/schedules" };
+  }
+  rpc CreateHeatingSchedule(CreateHeatingScheduleRequest) returns (CreateHeatingScheduleResponse) {
+    option (google.api.http) = {
+      post: "/v1/heating/zones/{zone_id}/schedules"
+      body: "*"
+    };
+  }
+}
+
+enum HeatingMode {
+  HEATING_MODE_UNSPECIFIED = 0;
+  HEATING_MODE_AUTO = 1;
+  HEATING_MODE_MANUAL = 2;
+  HEATING_MODE_OFF = 3;
+}
+
+message HeatingZone {
+  string id = 1;
+  string house_id = 2;
+  string name = 3;
+  HeatingMode mode = 4;
+}
+
+message ListHeatingZonesRequest {
+  string house_id = 1;
+}
+
+message ListHeatingZonesResponse {
+  repeated HeatingZone zones = 1;
+}
+
+message CreateHeatingZoneRequest {
+  string house_id = 1;
+  string name = 2;
+  HeatingMode mode = 3;
+}
+
+message CreateHeatingZoneResponse {
+  HeatingZone zone = 1;
+}
+
+message ListHeatingSchedulesRequest {
+  string zone_id = 1;
+}
+
+message ListHeatingSchedulesResponse {
+  repeated common.v1.Schedule schedules = 1;
+}
+
+message CreateHeatingScheduleRequest {
+  string zone_id = 1;
+  string name = 2;
+  string timezone = 3;
+  repeated common.v1.ScheduleSlot slots = 4;
+}
+
+message CreateHeatingScheduleResponse {
+  common.v1.Schedule schedule = 1;
+}

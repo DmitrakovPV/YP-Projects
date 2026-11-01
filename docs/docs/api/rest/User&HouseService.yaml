@@ -1,203 +1,750 @@
 openapi: 3.0.3
 info:
-  title: Users and Houses Service API
-  version: 1.1.0
+  title: Единый API "Теплый дом"
   description: |
-    Аутентификация, профили пользователей и управление домами.
+    Единая точка входа для всех клиентов умного дома.
+    API Gateway маршрутизирует запросы к внутренним микросервисам по gRPC.
+  version: 1.1.0
 servers:
-  - url: https://api.warmhouse.local/v1
-    description: Через API Gateway
-x-service-prefix: /users-houses
+  - url: https://api.warmhouse.example.com/v1
 security:
   - bearerAuth: []
 tags:
-  - name: Auth
-  - name: Users
-  - name: Houses
+  - name: Users & Houses
+    description: Управление пользователями и домами
+  - name: Devices
+    description: Каталог устройств и их состояние
+  - name: Heating
+    description: Зоны отопления и расписания
+  - name: Lighting
+    description: Группы освещения и расписания
+  - name: Access & Gate
+    description: Ворота, замки, права доступа
+  - name: Surveillance
+    description: Камеры и записи
+  - name: Notifications
+    description: Подписки на уведомления
 paths:
-  /auth/login:
-    post:
-      tags: [Auth]
-      summary: Аутентификация
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema: { $ref: '#/components/schemas/LoginRequest' }
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema: { $ref: '#/components/schemas/TokenPair' }
-        '401': { $ref: '#/components/responses/Unauthorized' }
-
-  /auth/refresh:
-    post:
-      tags: [Auth]
-      summary: Обновление токена
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema: { $ref: '#/components/schemas/RefreshRequest' }
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema: { $ref: '#/components/schemas/TokenPair' }
-
-  /users/me:
-    get:
-      tags: [Users]
-      summary: Профиль текущего пользователя
-      description: Возвращает профиль пользователя, идентифицированного по JWT.
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema: { $ref: '#/components/schemas/User' }
-        '401': { $ref: '#/components/responses/Unauthorized' }
-
+  # ========== Users & Houses ==========
   /users:
     get:
-      tags: [Users]
-      summary: Список пользователей (admin)
+      tags: [Users & Houses]
+      summary: Список пользователей (для support)
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
       responses:
         '200':
-          description: OK
+          description: Успешно
           content:
             application/json:
               schema:
                 type: array
-                items: { $ref: '#/components/schemas/User' }
-
+                items:
+                  $ref: '#/components/schemas/User'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /users/{userId}:
+    get:
+      tags: [Users & Houses]
+      summary: Профиль пользователя
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404': { $ref: '#/components/responses/NotFound' }
   /houses:
+    get:
+      tags: [Users & Houses]
+      summary: Дома текущего пользователя
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/House'
     post:
-      tags: [Houses]
+      tags: [Users & Houses]
       summary: Создать дом
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/HouseCreate' }
+            schema:
+              $ref: '#/components/schemas/HouseCreate'
       responses:
         '201':
-          description: Created
+          description: Создан
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/House' }
-
+              schema:
+                $ref: '#/components/schemas/House'
   /houses/{houseId}:
-    parameters: [ { $ref: '#/components/parameters/HouseId' } ]
     get:
-      tags: [Houses]
-      summary: Получить дом
+      tags: [Users & Houses]
+      summary: Информация о доме
+      parameters:
+        - $ref: '#/components/parameters/HouseIdParam'
       responses:
         '200':
-          description: OK
+          description: Успешно
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/House' }
-        '404': { $ref: '#/components/responses/NotFound' }
+              schema:
+                $ref: '#/components/schemas/House'
     patch:
-      tags: [Houses]
-      summary: Обновить дом
+      tags: [Users & Houses]
+      summary: Обновить дом (адрес, состояние)
+      parameters:
+        - $ref: '#/components/parameters/HouseIdParam'
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/HouseUpdate' }
+            schema:
+              $ref: '#/components/schemas/HouseUpdate'
       responses:
         '200':
-          description: OK
+          description: Обновлено
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/House' }
+              schema:
+                $ref: '#/components/schemas/House'
     delete:
-      tags: [Houses]
-      summary: Удалить дом
+      tags: [Users & Houses]
+      summary: Удалить дом (только владелец)
+      parameters:
+        - $ref: '#/components/parameters/HouseIdParam'
       responses:
-        '204': { description: Deleted }
+        '204': { description: Удалено }
+
+  # ========== Devices ==========
+  /devices:
+    get:
+      tags: [Devices]
+      summary: Список устройств (с фильтрацией по дому)
+      parameters:
+        - name: houseId
+          in: query
+          schema: { type: string, format: uuid }
+        - name: state
+          in: query
+          schema: { $ref: '#/components/schemas/DeviceState' }
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+    post:
+      tags: [Devices]
+      summary: Зарегистрировать устройство
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCreate'
+      responses:
+        '201':
+          description: Устройство создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+  /devices/{deviceId}:
+    get:
+      tags: [Devices]
+      summary: Информация об устройстве
+      parameters:
+        - $ref: '#/components/parameters/DeviceIdParam'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+    patch:
+      tags: [Devices]
+      summary: Обновить устройство (имя, желаемое состояние)
+      parameters:
+        - $ref: '#/components/parameters/DeviceIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceUpdate'
+      responses:
+        '200':
+          description: Обновлено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+    delete:
+      tags: [Devices]
+      summary: Удалить устройство
+      parameters:
+        - $ref: '#/components/parameters/DeviceIdParam'
+      responses:
+        '204': { description: Удалено }
+  /devices/{deviceId}/desired:
+    put:
+      tags: [Devices]
+      summary: Установить желаемую температуру
+      parameters:
+        - $ref: '#/components/parameters/DeviceIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DesiredState'
+      responses:
+        '200': { description: Желаемое состояние обновлено }
+
+  # ========== Heating ==========
+  /heating/zones:
+    get:
+      tags: [Heating]
+      summary: Список зон отопления (по дому)
+      parameters:
+        - name: houseId
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HeatingZone'
+    post:
+      tags: [Heating]
+      summary: Создать зону отопления
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HeatingZoneCreate'
+      responses:
+        '201':
+          description: Создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeatingZone'
+  /heating/zones/{zoneId}/schedules:
+    get:
+      tags: [Heating]
+      summary: Расписания зоны
+      parameters:
+        - name: zoneId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schedule'
+    post:
+      tags: [Heating]
+      summary: Создать расписание
+      parameters:
+        - name: zoneId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleCreate'
+      responses:
+        '201':
+          description: Создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+
+  # ========== Lighting ==========
+  /lighting/groups:
+    get:
+      tags: [Lighting]
+      summary: Группы освещения (по дому)
+      parameters:
+        - name: houseId
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightingGroup'
+    post:
+      tags: [Lighting]
+      summary: Создать группу освещения
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LightingGroupCreate'
+      responses:
+        '201':
+          description: Создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LightingGroup'
+  /lighting/groups/{groupId}/schedules:
+    get:
+      tags: [Lighting]
+      summary: Расписания группы
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schedule'
+    post:
+      tags: [Lighting]
+      summary: Создать расписание
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleCreate'
+      responses:
+        '201':
+          description: Создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+
+  # ========== Access & Gate ==========
+  /access/doors:
+    get:
+      tags: [Access & Gate]
+      summary: Двери/ворота (по дому)
+      parameters:
+        - name: houseId
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccessPoint'
+  /access/doors/{doorId}/open:
+    post:
+      tags: [Access & Gate]
+      summary: Открыть дверь/ворота
+      parameters:
+        - name: doorId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Команда отправлена }
+  /access/doors/{doorId}/permissions:
+    get:
+      tags: [Access & Gate]
+      summary: Права доступа к двери
+      parameters:
+        - name: doorId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccessPermission'
+
+  # ========== Surveillance ==========
+  /surveillance/cameras:
+    get:
+      tags: [Surveillance]
+      summary: Камеры (по дому)
+      parameters:
+        - name: houseId
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Camera'
+  /surveillance/cameras/{cameraId}/recordings:
+    get:
+      tags: [Surveillance]
+      summary: Список записей камеры
+      parameters:
+        - name: cameraId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: from
+          in: query
+          schema: { type: string, format: date-time }
+        - name: to
+          in: query
+          schema: { type: string, format: date-time }
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recording'
+
+  # ========== Notifications ==========
+  /notifications/subscriptions:
+    get:
+      tags: [Notifications]
+      summary: Подписки текущего пользователя
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationSubscription'
+    post:
+      tags: [Notifications]
+      summary: Создать подписку на уведомления
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationSubscriptionCreate'
+      responses:
+        '201':
+          description: Создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationSubscription'
+  /notifications/subscriptions/{subscriptionId}:
+    delete:
+      tags: [Notifications]
+      summary: Удалить подписку
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '204': { description: Удалена }
+
 components:
   securitySchemes:
-    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   parameters:
-    HouseId:
+    UserIdParam:
+      name: userId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    HouseIdParam:
       name: houseId
       in: path
       required: true
       schema: { type: string, format: uuid }
+    DeviceIdParam:
+      name: deviceId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    PageParam:
+      name: page
+      in: query
+      schema: { type: integer, minimum: 0, default: 0 }
+    LimitParam:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+
   responses:
     Unauthorized:
-      description: Unauthorized
+      description: Требуется аутентификация
       content:
-        application/json:
-          schema: { $ref: '#/components/schemas/Error' }
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    Forbidden:
+      description: Доступ запрещён
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
     NotFound:
-      description: Not found
+      description: Ресурс не найден
       content:
-        application/json:
-          schema: { $ref: '#/components/schemas/Error' }
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+
   schemas:
-    Error:
+    Problem:
       type: object
-      required: [code, message]
+      required: [type, title, status, detail, instance]
       properties:
-        code: { type: string }
-        message: { type: string }
-        traceId: { type: string }
-    LoginRequest:
-      type: object
-      required: [email, password]
-      properties:
-        email: { type: string, format: email }
-        password: { type: string, format: password }
-    RefreshRequest:
-      type: object
-      required: [refreshToken]
-      properties:
-        refreshToken: { type: string }
-    TokenPair:
-      type: object
-      required: [accessToken, refreshToken, expiresIn]
-      properties:
-        accessToken: { type: string }
-        refreshToken: { type: string }
-        expiresIn: { type: integer, example: 3600 }
+        type: { type: string, format: uri }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string, format: uri }
+
     User:
       type: object
-      required: [id, email, fullName]
       properties:
         id: { type: string, format: uuid }
         email: { type: string, format: email }
-        fullName: { type: string }
         phone: { type: string }
-        role:
-          type: string
-          enum: [OWNER, FAMILY_MEMBER, GUEST, ADMIN]
+        role: { type: string, enum: [user, support] }
         createdAt: { type: string, format: date-time }
+
     House:
       type: object
-      required: [id, name, ownerId]
       properties:
         id: { type: string, format: uuid }
-        name: { type: string }
-        address: { type: string }
         ownerId: { type: string, format: uuid }
-        createdAt: { type: string, format: date-time }
+        address: { type: string }
+        state: { type: string, enum: [active, inactive] }
+        members:
+          type: array
+          items: { $ref: '#/components/schemas/HouseMember' }
+
     HouseCreate:
       type: object
-      required: [name]
+      required: [address]
       properties:
-        name: { type: string }
         address: { type: string }
+
     HouseUpdate:
       type: object
       properties:
-        name: { type: string }
         address: { type: string }
+        state: { type: string, enum: [active, inactive] }
+
+    HouseMember:
+      type: object
+      properties:
+        userId: { type: string, format: uuid }
+        role: { type: string, enum: [owner, member, guest] }
+        joinedAt: { type: string, format: date-time }
+
+    DeviceState:
+      type: string
+      enum: [registered, provisioning, active, offline]
+
+    Device:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        serial: { type: string }
+        state: { $ref: '#/components/schemas/DeviceState' }
+        reported: { $ref: '#/components/schemas/ReportState' }
+        desired: { $ref: '#/components/schemas/DesiredState' }
+
+    DeviceCreate:
+      type: object
+      required: [serial]
+      properties:
+        serial: { type: string }
+        houseId: { type: string, format: uuid }
+
+    DeviceUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        desired: { $ref: '#/components/schemas/DesiredState' }
+
+    ReportState:
+      type: object
+      properties:
+        temperature: { type: number, format: double }
+
+    DesiredState:
+      type: object
+      properties:
+        targetTemperature: { type: number, format: double }
+
+    HeatingZone:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        houseId: { type: string, format: uuid }
+        name: { type: string }
+        mode: { type: string, enum: [auto, manual, off] }
+
+    HeatingZoneCreate:
+      type: object
+      required: [houseId, name]
+      properties:
+        houseId: { type: string, format: uuid }
+        name: { type: string }
+        mode: { type: string, enum: [auto, manual, off] }
+
+    Schedule:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        timezone: { type: string }
+        slots:
+          type: array
+          items: { $ref: '#/components/schemas/ScheduleSlot' }
+
+    ScheduleCreate:
+      type: object
+      required: [name, timezone, slots]
+      properties:
+        name: { type: string }
+        timezone: { type: string }
+        slots:
+          type: array
+          items: { $ref: '#/components/schemas/ScheduleSlot' }
+
+    ScheduleSlot:
+      type: object
+      required: [dayOfWeek, startTime, endTime]
+      properties:
+        dayOfWeek: { type: integer, minimum: 1, maximum: 7 }
+        startTime: { type: string, format: time }
+        endTime: { type: string, format: time }
+
+    LightingGroup:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        houseId: { type: string, format: uuid }
+        name: { type: string }
+        devices:
+          type: array
+          items: { type: string, format: uuid }
+
+    LightingGroupCreate:
+      type: object
+      required: [houseId, name]
+      properties:
+        houseId: { type: string, format: uuid }
+        name: { type: string }
+        deviceIds:
+          type: array
+          items: { type: string, format: uuid }
+
+    AccessPoint:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        houseId: { type: string, format: uuid }
+        name: { type: string }
+        type: { type: string, enum: [door, gate, lock] }
+
+    AccessPermission:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        doorId: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        scheduleId: { type: string, format: uuid, nullable: true }
+
+    Camera:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        houseId: { type: string, format: uuid }
+        name: { type: string }
+        streamUrl: { type: string, format: uri }
+
+    Recording:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        cameraId: { type: string, format: uuid }
+        startedAt: { type: string, format: date-time }
+        endedAt: { type: string, format: date-time }
+        url: { type: string, format: uri }
+
+    NotificationSubscription:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        eventType: { type: string, enum: [temperature_alert, motion_detected, door_opened, system] }
+        channel: { type: string, enum: [push, email, sms] }
+        enabled: { type: boolean }
+
+    NotificationSubscriptionCreate:
+      type: object
+      required: [eventType, channel]
+      properties:
+        eventType: { type: string, enum: [temperature_alert, motion_detected, door_opened, system] }
+        channel: { type: string, enum: [push, email, sms] }

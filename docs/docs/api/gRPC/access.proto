@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package access.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/warmhouse/api/gen/access/v1;accessv1";
+
+service AccessService {
+  rpc ListAccessPoints(ListAccessPointsRequest) returns (ListAccessPointsResponse) {
+    option (google.api.http) = { get: "/v1/access/doors" };
+  }
+  rpc OpenDoor(OpenDoorRequest) returns (OpenDoorResponse) {
+    option (google.api.http) = {
+      post: "/v1/access/doors/{door_id}/open"
+      body: "*"
+    };
+  }
+  rpc ListAccessPermissions(ListAccessPermissionsRequest) returns (ListAccessPermissionsResponse) {
+    option (google.api.http) = { get: "/v1/access/doors/{door_id}/permissions" };
+  }
+}
+
+enum AccessPointType {
+  ACCESS_POINT_TYPE_UNSPECIFIED = 0;
+  ACCESS_POINT_TYPE_DOOR = 1;
+  ACCESS_POINT_TYPE_GATE = 2;
+  ACCESS_POINT_TYPE_LOCK = 3;
+}
+
+message AccessPoint {
+  string id = 1;
+  string house_id = 2;
+  string name = 3;
+  AccessPointType type = 4;
+}
+
+message AccessPermission {
+  string id = 1;
+  string door_id = 2;
+  string user_id = 3;
+  optional string schedule_id = 4;
+}
+
+message ListAccessPointsRequest {
+  string house_id = 1;
+}
+
+message ListAccessPointsResponse {
+  repeated AccessPoint points = 1;
+}
+
+message OpenDoorRequest {
+  string door_id = 1;
+}
+
+message OpenDoorResponse {
+  string command_id = 1;
+  google.protobuf.Timestamp issued_at = 2;
+}
+
+message ListAccessPermissionsRequest {
+  string door_id = 1;
+}
+
+message ListAccessPermissionsResponse {
+  repeated AccessPermission permissions = 1;
+}
