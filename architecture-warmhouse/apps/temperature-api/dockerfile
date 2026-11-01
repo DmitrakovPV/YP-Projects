@@ -1,0 +1,14 @@
+FROM golang:1.22-alpine AS builder
+WORKDIR /src
+COPY . .
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o /out/temperature-api .
+
+FROM alpine:3.19
+RUN adduser -D -u 10001 app
+USER app
+WORKDIR /app
+COPY --from=builder /out/temperature-api .
+EXPOSE 8081
+HEALTHCHECK --interval=10s --timeout=3s --retries=5 \
+  CMD wget -qO- http://localhost:8081/health || exit 1
+CMD ["./temperature-api"]

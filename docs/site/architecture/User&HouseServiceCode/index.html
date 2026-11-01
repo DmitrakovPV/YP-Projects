@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>User&HouseServiceCode - FitLife Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/mkdocs_puml/puml.css" rel="stylesheet" />
+        <link href="../../assets/mkdocs_puml/interaction.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "User\u0026HouseServiceCode";
+        var mkdocs_page_input_path = "architecture\\User\u0026HouseServiceCode.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> FitLife Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Welcome to MkDocs</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../AccessGateService/">AccessGateService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../DeviceService/">DeviceService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../DeviceServiceCode/">DeviceServiceCode</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../HeatingService/">HeatingService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../LightningService/">LightningService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../NotificationService/">NotificationService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SurveillanceService/">SurveillanceService</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../User%26HouseService/">User&HouseService</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">User&HouseServiceCode</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../container/">Container</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../context/">Context</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">FitLife Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Architecture</li>
+      <li class="breadcrumb-item active">User&HouseServiceCode</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class='puml-container'><div class="puml light" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" data-diagram-type="CLASS" style="width:637px;height:476px;background:#FFFFFF;" width="637px" height="476px" viewBox="0 0 637 476" zoomAndPan="magnify" preserveAspectRatio="xMidYMid meet" contentStyleType="text/css" class="diagram"><?plantuml 1.2026.9?><defs/><g font-family="sans-serif" lengthAdjust="spacing"><g class="title" data-source-line="2"><text x="10" y="22.995" fill="#000" font-size="14" textLength="610.798" font-weight="700">Диаграмма кода для микросервиса управления пользователями и домами</text></g><g class="entity" data-qualified-name="User" id="ent0001" data-source-line="6"><rect x="47.425" y="44.297" width="206.257" height="129.484" fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/><ellipse cx="130.348" cy="60.297" rx="11" ry="11" fill="#ADD1B2" style="stroke:#181818;stroke-width:1;"/><path d="M133.317,65.938 Q132.739,66.234 132.098,66.375 Q131.457,66.531 130.754,66.531 Q128.254,66.531 126.926,64.891 Q125.614,63.234 125.614,60.109 Q125.614,56.984 126.926,55.328 Q128.254,53.672 130.754,53.672 Q131.457,53.672 132.098,53.828 Q132.754,53.984 133.317,54.281 L133.317,57 Q132.692,56.422 132.098,56.156 Q131.504,55.875 130.879,55.875 Q129.536,55.875 128.848,56.953 Q128.161,58.016 128.161,60.109 Q128.161,62.203 128.848,63.281 Q129.536,64.344 130.879,64.344 Q131.504,64.344 132.098,64.078 Q132.692,63.797 133.317,63.219 L133.317,65.938 Z " fill="#000"/><text x="150.848" y="65.144" fill="#000" font-size="14" textLength="31.91">User</text><line x1="48.425" y1="76.297" x2="252.682" y2="76.297" style="stroke:#181818;stroke-width:0.5;"/><text x="53.425" y="93.292" fill="#000" font-size="14" textLength="82.626">+ID: UserID</text><text x="53.425" y="109.589" fill="#000" font-size="14" textLength="99.928">+Email: string</text><text x="53.425" y="125.886" fill="#000" font-size="14" textLength="104.453">+Phone: string</text><line x1="48.425" y1="133.188" x2="252.682" y2="133.188" style="stroke:#181818;stroke-width:1;"/><text x="53.425" y="150.183" fill="#000" font-size="14" textLength="146.918">+AddHouse(): House</text><text x="53.425" y="166.479" fill="#000" font-size="14" textLength="194.257">+CanAccess(houseID): bool</text></g><g class="entity" data-qualified-name="House" id="ent0002" data-source-line="15"><rect x="7.595" y="250.777" width="285.923" height="210.969" fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/><ellipse cx="124.37" cy="266.777" rx="11" ry="11" fill="#ADD1B2" style="stroke:#181818;stroke-width:1;"/><path d="M127.338,272.418 Q126.76,272.714 126.12,272.855 Q125.479,273.011 124.776,273.011 Q122.276,273.011 120.948,271.371 Q119.635,269.714 119.635,266.589 Q119.635,263.464 120.948,261.808 Q122.276,260.152 124.776,260.152 Q125.479,260.152 126.12,260.308 Q126.776,260.464 127.338,260.761 L127.338,263.48 Q126.713,262.902 126.12,262.636 Q125.526,262.355 124.901,262.355 Q123.557,262.355 122.87,263.433 Q122.182,264.496 122.182,266.589 Q122.182,268.683 122.87,269.761 Q123.557,270.824 124.901,270.824 Q125.526,270.824 126.12,270.558 Q126.713,270.277 127.338,269.699 L127.338,272.418 Z " fill="#000"/><text x="144.87" y="271.624" fill="#000" font-size="14" textLength="43.873">House</text><line x1="8.595" y1="282.777" x2="292.518" y2="282.777" style="stroke:#181818;stroke-width:0.5;"/><text x="13.595" y="299.772" fill="#000" font-size="14" textLength="94.589">+ID: HouseID</text><text x="13.595" y="316.069" fill="#000" font-size="14" textLength="128.338">+OwnerID: UserID</text><text x="13.595" y="332.366" fill="#000" font-size="14" textLength="117.394">+Address: string</text><text x="13.595" y="348.663" fill="#000" font-size="14" textLength="138.886">+State: HouseState</text><text x="13.595" y="364.959" fill="#000" font-size="14" textLength="143.521">+Members: []UserID</text><text x="13.595" y="381.256" fill="#000" font-size="14" textLength="227.705">+PendingInvitations: []Invitation</text><line x1="8.595" y1="388.558" x2="292.518" y2="388.558" style="stroke:#181818;stroke-width:1;"/><text x="13.595" y="405.553" fill="#000" font-size="14" textLength="123.888">+Activate(): error</text><text x="13.595" y="421.85" fill="#000" font-size="14" textLength="175.772">+Invite(email): Invitation</text><text x="13.595" y="438.147" fill="#000" font-size="14" textLength="226.741">+RemoveMember(userID): error</text><text x="13.595" y="454.444" fill="#000" font-size="14" textLength="273.923">+TransferOwnership(newOwner): error</text></g><g class="entity" data-qualified-name="GMN4" id="ent0005" data-source-line="32"><path d="M288.905,81.337 L288.905,105.037 L253.915,109.037 L288.905,113.037 L288.905,136.735 A0,0 0 0 0 288.905,136.735 L622.203,136.735 A0,0 0 0 0 622.203,136.735 L622.203,91.337 L612.203,81.337 L288.905,81.337 A0,0 0 0 0 288.905,81.337" style="stroke:#181818;stroke-width:0.5;" fill="#FEFFDD"/><path d="M612.203,81.337 L612.203,91.337 L622.203,91.337 L612.203,81.337" style="stroke:#181818;stroke-width:0.5;" fill="#FEFFDD"/><text x="294.905" y="98.404" fill="#000" font-size="13" textLength="131.974">Роли: user | support</text><text x="294.905" y="113.537" fill="#000" font-size="13" textLength="227.64">(partner — поставщик устройств,</text><text x="299.037" y="128.669" fill="#000" font-size="13" textLength="308.166">тут скорее всего описывать его нет смысла)</text></g><g class="link" data-entity-1="ent0001" data-entity-2="ent0002" id="lnk3" data-source-line="29" data-link-type="aggregation"><path d="M150.555,186.147 C150.555,209.557 150.555,224.697 150.555,250.717" style="stroke:#181818;stroke-width:1;" fill="none" id="User-backto-House" codeLine="29"/><polygon points="150.555,174.147,146.555,180.147,150.555,186.147,154.555,180.147,150.555,174.147" fill="none" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/><text x="151.555" y="216.844" fill="#000" font-size="13" textLength="56.494">владеет</text><text x="142.156" y="193.708" fill="#000" font-size="13">1</text><text x="144.361" y="239.84" fill="#000" font-size="13">*</text></g><?plantuml-src LLBDRjf04BxxAQQSdARWzkeRAfM2ggXHqvwggZ9cm2liNRIx1ga_KdvELIBraWVe8o02AWq4Nc7z2dsIpYn9eR9bxtppVJkpizyJ8TEyx29arWvD74Kw6JVwmcPbfpIeKoKjIjj8LH4TYq6MYForJaPeJLGCkYerduPbaKT5OYpgo6POe8cws4lAt4Qvw6UsmOJ02fiZk1ktS1DtMvtHTqNF1DoTMxiPBsPkMVq00XVkZWZhwjpDwJzr2rfDeBfq6w-RkgMRktk2YRqXzRAwTh_eFtMJwe9Ij0tl0lpE25_vOeiWC0CXXubE2aZpn9YcjLfqIejjEkMf-8pmF0Xy1jxJqU5B073ORiK-QhSuUbNG068m99Hz1auo9N4FgDSPRNQxHuh65nx4u1SClanaCqtHc31ZgDsYP4UfFFZsMDLJTsMFjZGEtumbjx3V2jNGjDb-CwSsiVYWysi6Zx7ee2RUXuyxyGdABedQSYI89vJq-LsuEqbgnOXsufEWrahxvfY78V8m2FzFTlWM2pN2RTMmz1NtjUzq8aqFjJ-HoSGmb3ZsmJyMpSFFl_QY1gfUXzhJsiDeOl2tFw5hdPCvBe90AekWsMUWUduwLCJzP5UuHGnS7xw2AOT3fIsbGhf_IyNWpzcDTqzrJfuXKrNVsNVaCWROVkwtJqsVaGe8kgmkW8n8TgKiLQTMsA7krgs1s1ksQNMrDM5r3O-PU-wJXQlgYhxK_450mmTk_2y0?></g></svg></div><div class="puml dark" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" data-diagram-type="CLASS" style="width:637px;height:476px;background:#1B1B1B;" width="637px" height="476px" viewBox="0 0 637 476" zoomAndPan="magnify" preserveAspectRatio="xMidYMid meet" contentStyleType="text/css" class="diagram"><?plantuml 1.2026.9?><defs/><g font-family="sans-serif" lengthAdjust="spacing"><rect x="0" y="0" width="637" height="476" fill="#1B1B1B" style="stroke:none;"/><g class="title" data-source-line="2"><text x="10" y="22.995" fill="#FFF" font-size="14" textLength="610.798" font-weight="700">Диаграмма кода для микросервиса управления пользователями и домами</text></g><g class="entity" data-qualified-name="User" id="ent0001" data-source-line="6"><rect x="47.425" y="44.297" width="206.257" height="129.484" fill="#313139" style="stroke:#E7E7E7;stroke-width:0.5;" rx="2.5" ry="2.5"/><ellipse cx="130.348" cy="60.297" rx="11" ry="11" fill="#2E5233" style="stroke:#E7E7E7;stroke-width:1;"/><path d="M133.317,65.938 Q132.739,66.234 132.098,66.375 Q131.457,66.531 130.754,66.531 Q128.254,66.531 126.926,64.891 Q125.614,63.234 125.614,60.109 Q125.614,56.984 126.926,55.328 Q128.254,53.672 130.754,53.672 Q131.457,53.672 132.098,53.828 Q132.754,53.984 133.317,54.281 L133.317,57 Q132.692,56.422 132.098,56.156 Q131.504,55.875 130.879,55.875 Q129.536,55.875 128.848,56.953 Q128.161,58.016 128.161,60.109 Q128.161,62.203 128.848,63.281 Q129.536,64.344 130.879,64.344 Q131.504,64.344 132.098,64.078 Q132.692,63.797 133.317,63.219 L133.317,65.938 Z " fill="#FFF"/><text x="150.848" y="65.144" fill="#FFF" font-size="14" textLength="31.91">User</text><line x1="48.425" y1="76.297" x2="252.682" y2="76.297" style="stroke:#E7E7E7;stroke-width:0.5;"/><text x="53.425" y="93.292" fill="#FFF" font-size="14" textLength="82.626">+ID: UserID</text><text x="53.425" y="109.589" fill="#FFF" font-size="14" textLength="99.928">+Email: string</text><text x="53.425" y="125.886" fill="#FFF" font-size="14" textLength="104.453">+Phone: string</text><line x1="48.425" y1="133.188" x2="252.682" y2="133.188" style="stroke:#E7E7E7;stroke-width:1;"/><text x="53.425" y="150.183" fill="#FFF" font-size="14" textLength="146.918">+AddHouse(): House</text><text x="53.425" y="166.479" fill="#FFF" font-size="14" textLength="194.257">+CanAccess(houseID): bool</text></g><g class="entity" data-qualified-name="House" id="ent0002" data-source-line="15"><rect x="7.595" y="250.777" width="285.923" height="210.969" fill="#313139" style="stroke:#E7E7E7;stroke-width:0.5;" rx="2.5" ry="2.5"/><ellipse cx="124.37" cy="266.777" rx="11" ry="11" fill="#2E5233" style="stroke:#E7E7E7;stroke-width:1;"/><path d="M127.338,272.418 Q126.76,272.714 126.12,272.855 Q125.479,273.011 124.776,273.011 Q122.276,273.011 120.948,271.371 Q119.635,269.714 119.635,266.589 Q119.635,263.464 120.948,261.808 Q122.276,260.152 124.776,260.152 Q125.479,260.152 126.12,260.308 Q126.776,260.464 127.338,260.761 L127.338,263.48 Q126.713,262.902 126.12,262.636 Q125.526,262.355 124.901,262.355 Q123.557,262.355 122.87,263.433 Q122.182,264.496 122.182,266.589 Q122.182,268.683 122.87,269.761 Q123.557,270.824 124.901,270.824 Q125.526,270.824 126.12,270.558 Q126.713,270.277 127.338,269.699 L127.338,272.418 Z " fill="#FFF"/><text x="144.87" y="271.624" fill="#FFF" font-size="14" textLength="43.873">House</text><line x1="8.595" y1="282.777" x2="292.518" y2="282.777" style="stroke:#E7E7E7;stroke-width:0.5;"/><text x="13.595" y="299.772" fill="#FFF" font-size="14" textLength="94.589">+ID: HouseID</text><text x="13.595" y="316.069" fill="#FFF" font-size="14" textLength="128.338">+OwnerID: UserID</text><text x="13.595" y="332.366" fill="#FFF" font-size="14" textLength="117.394">+Address: string</text><text x="13.595" y="348.663" fill="#FFF" font-size="14" textLength="138.886">+State: HouseState</text><text x="13.595" y="364.959" fill="#FFF" font-size="14" textLength="143.521">+Members: []UserID</text><text x="13.595" y="381.256" fill="#FFF" font-size="14" textLength="227.705">+PendingInvitations: []Invitation</text><line x1="8.595" y1="388.558" x2="292.518" y2="388.558" style="stroke:#E7E7E7;stroke-width:1;"/><text x="13.595" y="405.553" fill="#FFF" font-size="14" textLength="123.888">+Activate(): error</text><text x="13.595" y="421.85" fill="#FFF" font-size="14" textLength="175.772">+Invite(email): Invitation</text><text x="13.595" y="438.147" fill="#FFF" font-size="14" textLength="226.741">+RemoveMember(userID): error</text><text x="13.595" y="454.444" fill="#FFF" font-size="14" textLength="273.923">+TransferOwnership(newOwner): error</text></g><g class="entity" data-qualified-name="GMN4" id="ent0005" data-source-line="32"><path d="M288.905,81.337 L288.905,105.037 L253.915,109.037 L288.905,113.037 L288.905,136.735 A0,0 0 0 0 288.905,136.735 L622.203,136.735 A0,0 0 0 0 622.203,136.735 L622.203,91.337 L612.203,81.337 L288.905,81.337 A0,0 0 0 0 288.905,81.337" style="stroke:#E7E7E7;stroke-width:0.5;" fill="#714137"/><path d="M612.203,81.337 L612.203,91.337 L622.203,91.337 L612.203,81.337" style="stroke:#E7E7E7;stroke-width:0.5;" fill="#714137"/><text x="294.905" y="98.404" fill="#FFF" font-size="13" textLength="131.974">Роли: user | support</text><text x="294.905" y="113.537" fill="#FFF" font-size="13" textLength="227.64">(partner — поставщик устройств,</text><text x="299.037" y="128.669" fill="#FFF" font-size="13" textLength="308.166">тут скорее всего описывать его нет смысла)</text></g><g class="link" data-entity-1="ent0001" data-entity-2="ent0002" id="lnk3" data-source-line="29" data-link-type="aggregation"><path d="M150.555,186.147 C150.555,209.557 150.555,224.697 150.555,250.717" style="stroke:#E7E7E7;stroke-width:1;" fill="none" id="User-backto-House" codeLine="29"/><polygon points="150.555,174.147,146.555,180.147,150.555,186.147,154.555,180.147,150.555,174.147" fill="none" style="stroke:#E7E7E7;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/><text x="151.555" y="216.844" fill="#FFF" font-size="13" textLength="56.494">владеет</text><text x="142.156" y="193.708" fill="#FFF" font-size="13">1</text><text x="144.361" y="239.84" fill="#FFF" font-size="13">*</text></g><?plantuml-src LLBDRjf04BxxAQQSI5DmU-M6IgMWAchKjAUggemzu1NshhMx1ga_KdvELIBraWVe8o02AWq4Nc7z2dsIpYn9eR9bxtupttupizyJ8UEiJ11IQmlJ2aCTZPi3OTEoLnhKiP8MfMt6AW-FnJ2DHFPQHoEq9io7YOhDfwBCip2FZ4KTsXHpD662_QZCR9X4UjZaU625pH3SZLkuYRkjpkYxecS2xiwjtOmNCxUiVW212tT72UlgtCtfFtKBMasWkdGRpvkwfPkxUu8fUqFiPNNjVj5_wYRL1ONe63u5-9qHll9YYo0mGo6BI4Svn5baJDjQBNgbnIurUIe-8pmF0X-1zzGvV0a03hkTbjzrExnxbLF_BJ14b0C6Jb8bSGzeD1Xj9ycHekdL3rhW5mo-Z6GxZj6OUifGjqF1db9PyErHrQVkP8-sQRnzCvPSmduffA7fiFrYJcrayO7drmmUOzv3JNaVFkx89oWJ8dNbI52UKDB7TzjT9x4L8pg9Eq6jbVR5SHxMaOT1-7-qmxUOgn5kLUkbLzpdljEHD7tKlYEJYg8kSUmt_x9e7dx-jHSrK8q6r9xM7aRJ0d_x4xhMEPdZ8WYaiWXQ358Bgk-dGoBk9xl2BLh0-l0LJ5aKIbiArUd-BOd1dxCRxvxgd3n3fgg-i-_8PGom_Tnl7ve-8nOGT5bT01cHx4fHKgTIsA7krgs1iZTiq-fgQyBg6XuZzrmd4rVL5Nsf-8E0XWzS-5y0?></g></svg></div></div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../User%26HouseService/" class="btn btn-neutral float-left" title="User&HouseService"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../container/" class="btn btn-neutral float-right" title="Container">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../User%26HouseService/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../container/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+      <script src="../../assets/mkdocs_puml/puml.js"></script>
+      <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+      <script src="../../assets/mkdocs_puml/interaction.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package common.v1;
+
+import "google/type/dayofweek.proto";
+import "google/type/timeofday.proto";
+
+option go_package = "github.com/warmhouse/api/gen/common/v1;commonv1";
+
+message Schedule {
+  string id = 1;
+  string name = 2;
+  string timezone = 3;
+  repeated ScheduleSlot slots = 4;
+}
+
+message ScheduleSlot {
+  google.type.DayOfWeek day_of_week = 1;
+  google.type.TimeOfDay start_time = 2;
+  google.type.TimeOfDay end_time = 3;
+}

@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package surveillance.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/warmhouse/api/gen/surveillance/v1;surveillancev1";
+
+service SurveillanceService {
+  rpc ListCameras(ListCamerasRequest) returns (ListCamerasResponse) {
+    option (google.api.http) = { get: "/v1/surveillance/cameras" };
+  }
+  rpc ListRecordings(ListRecordingsRequest) returns (ListRecordingsResponse) {
+    option (google.api.http) = { get: "/v1/surveillance/cameras/{camera_id}/recordings" };
+  }
+  // Future: WatchCameraStream (server-streaming) — signaling для WebRTC/HLS.
+  // Когда потребуется вернуть стриминг — раскомментировать и добавить сообщения:
+  //   rpc WatchCameraStream(WatchCameraStreamRequest) returns (stream CameraFrame);
+}
+
+message Camera {
+  string id = 1;
+  string house_id = 2;
+  string name = 3;
+  string stream_url = 4;
+}
+
+message Recording {
+  string id = 1;
+  string camera_id = 2;
+  google.protobuf.Timestamp started_at = 3;
+  google.protobuf.Timestamp ended_at = 4;
+  string url = 5;
+}
+
+message ListCamerasRequest {
+  string house_id = 1;
+}
+
+message ListCamerasResponse {
+  repeated Camera cameras = 1;
+}
+
+message ListRecordingsRequest {
+  string camera_id = 1;
+  optional google.protobuf.Timestamp from = 2;
+  optional google.protobuf.Timestamp to = 3;
+}
+
+message ListRecordingsResponse {
+  repeated Recording recordings = 1;
+}
