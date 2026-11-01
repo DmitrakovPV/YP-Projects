@@ -121,9 +121,19 @@ ER диаграммы были спроектированы под каждую 
 - Микросервисы написаны на Go, что более совместимо с gRPC и кодогенерация будет осуществляться проще
 
 ### 2. Документация API
-1. REST Синхронный - 
-2. gRPC - 
-3. AsyncAPI - 
+1. REST Синхронный - https://jdegre.github.io/editor/?url=https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/rest/User%26HouseService.yaml 
+2. gRPC - для gRPC к сожалению нет WEB интерфейса для превью, только если оборачивать в REST
+	- user: https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/gRPC/user.proto
+	- house: https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/gRPC/house.proto
+	- device: https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/gRPC/device.proto
+	- heating: https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/gRPC/heating.proto
+	- lightning: https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/gRPC/lightning.proto
+	- access: https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/gRPC/access.proto
+	- surveliance: https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/gRPC/surveillance.proto
+	- schedule: https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/gRPC/schedule.proto
+	- pbuf: https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/gRPC/pbuf.yaml
+	- pbufGen: https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/gRPC/pbufGen.yaml
+3. AsyncAPI - https://studio.asyncapi.com/?url=https://raw.githubusercontent.com/DmitrakovPV/YP-Projects/refs/heads/warmhouse/docs/docs/api/eventsAPI.yaml
 
 # Задание 5. Работа с docker и docker-compose
 
@@ -166,8 +176,13 @@ Locations - название комнаты, sensorId - идентификато
 		}
 	}
 ```
+Пункт выполнен - смотреть содержимое папки temperature-api
 
 2) Приложение следует упаковать в Docker и добавить в docker-compose. Порт по умолчанию должен быть 8081
+
+Пункт выполнен - но у меня порт 8080 был занят PlantUML контейнером, новый сервис повесил на 8081 
+Но порт откуда должен запускаться монолит я поменял на 8088 просьба обратить внимание, когда будете дергать запросы в postman
+
 
 3) Кроме того для smart_home приложения требуется база данных - добавьте в docker-compose файл настройки для запуска postgres с указанием скрипта инициализации ./smart_home/init.sql
 
@@ -179,5 +194,7 @@ Locations - название комнаты, sensorId - идентификато
 Должно при каждом вызове отображаться разное значение температуры
 
 Ревьюер будет проверять точно так же.
+
+Пункт выполнен - при вызове  Get All Sensors возвращается список всех сенсоров после их создания Create Sensor
 
 
